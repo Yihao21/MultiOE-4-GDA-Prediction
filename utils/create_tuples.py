@@ -34,5 +34,3 @@ if __name__ == '__main__':
         if v >= 15: print("Tuple {} show {} times".format(k, v))
 
 
-    #print("sort_by_value:", sort_by_value)
-
