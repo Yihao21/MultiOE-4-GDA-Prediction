@@ -234,7 +234,7 @@ def print_raw(data, targetdir):
 
 if __name__ == '__main__':
     splitdataset("./DG_dataset_sub.json")
-    #createSubset("./DG_dataset_posandneg.json", "./DG_dataset_sub.json")
+    createSubset("./DG_dataset_posandneg.json", "./DG_dataset_sub.json")
 
     # # Mapping disease Mesh <-> DOID iri
     # df1 = pd.read_csv('DG-Miner_miner-disease-gene.tsv', sep='\t')       #MESH
@@ -258,57 +258,6 @@ if __name__ == '__main__':
 
     #df1 = pd.read_csv('DGdata_final.csv')
     #create_dataset(df1)
-
-
-    # # Test
-
-    # diseaseiri = list(df1['Diseaseiri'])
-    # mappingref = pd.read_csv('doidmeshmappings.tsv', sep='\t')           #MeSH
-    # dis_map = list(mappingref['mapped_curie'])
-    # dis_map_iri = list(mappingref['curie_id'])
-    # dis_map_processed = [d[5:] for d in dis_map]
-    # idx = 1829
-    # d = diseaseiri[idx]
-    # print("Disease IRI: {}".format(d))
-    # mesh_idx = dis_map_iri.index(d)
-    # d_mesh = dis_map[mesh_idx]
-    # print("Disease Mesh: {}".format(d_mesh))
-    #
-    # geneiri = list(df1["Geneiri"])
-    # print(geneiri[idx])
-    # mappingogg = pd.read_csv('mappingsHGNCOGG.csv')
-    # ogg_iri = list(mappingogg['curie_id'])
-    # ogg_hgnc = list(mappingogg['mapped_curie'])
-    # ogg_idx = ogg_iri.index(geneiri[idx])
-    # a = ogg_hgnc[ogg_idx]
-    # print(ogg_hgnc[ogg_idx])
-    #
-    # mappinghgnc = pd.read_csv('HGNC UNIPROTmapping.tsv', sep='\t')
-    # ogg_map_hgnc = list(mappinghgnc['HGNC ID'])
-    # ogg_map_uniprot = list(mappinghgnc['UniProt ID(supplied by UniProt)'])
-    # ogg_map_idx = ogg_map_hgnc.index(a)
-    # gene_uniprot = ogg_map_uniprot[ogg_map_idx]
-    # print("Gene Uniprot: {}".format(gene_uniprot))
-    #
-    # dgminer = pd.read_csv('DG-Miner_miner-disease-gene.tsv', sep='\t')
-    # gene_dgminer = list(dgminer['Gene'])
-    # dis_dgminer = list(dgminer['# Disease(MESH)'])
-    # for idx, g in enumerate(tqdm(gene_dgminer)):
-    #     if g == gene_uniprot:
-    #         d = dis_dgminer[idx]
-    #         print(d)
-
-    # dgp = create_dis_gen_dic(df1)
-    # for k, v in dgp.items():
-    #     print(k)
-    #     print(v)
-    #     print("*********************************************")
-
-    #re_print("./DG_dataset_sub.json", "DG_sub.json")
-    re_print("./DG_train_org.json","./DG_train.json")
-    re_print("./DG_valid_org.json", "./DG_valid.json")
-    re_print("./DG_test_org.json", "./DG_test.json")
-
 
 
 
