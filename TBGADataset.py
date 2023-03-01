@@ -13,7 +13,6 @@ import numpy as np
 logging.getLogger("spacy")
 logging.basicConfig(filemode="w", filename="LOG.txt", level=logging.WARNING)
 
-
 '''
 Author: Yihao Wang@Fraunhofer SCAI
 Part of code was referenced from Phillip Wegner@Fraunhofer SCAI's work
@@ -27,19 +26,6 @@ relations2id = {"NA": 0, "therapeutic": 1, "biomarker": 2, "genomic_alterations"
 def process_txtdata(dir):
     gene = {"id":[], "name":[], "pos":[]}
     disease = {"id":[],"name":[], "pos":[]}
-    # old version of reading dataset
-    # with open(dir,"r") as f:
-    #     for line in f:
-    #         j_content = json.loads(line)
-    #         text_seq.append(j_content['text'])
-    #         labels.append(relations2id[j_content["relation"]])
-    #         gene["id"].append(j_content["h"]["id"])
-    #         #gene["name"].append(j_content["h"]["name"])
-    #         gene["pos"].append(j_content["h"]["pos"])
-    #         disease["id"].append(j_content["t"]["id"])
-    #         #disease["name"].append(j_content["t"]["name"])
-    #         disease["pos"].append(j_content["t"]["pos"])
-    # f.close()
     with open(dir, "r") as f:
         data = json.load(f)
     text_seq = [data[idx]["text"] for idx in range(len(data))]
@@ -96,8 +82,6 @@ class TBGADataset(Dataset):
         else:
             entities = [(ann_gene["pos"][idx][0], ann_gene["pos"][idx][0] + ann_gene["pos"][idx][1], ann_gene["id"][idx]),
                        (ann_disease["pos"][idx][0], ann_disease["pos"][idx][0] + ann_disease["pos"][idx][1], ann_disease["id"][idx])]
-        #print(sentence[ann_gene["pos"][idx][0] : ann_gene["pos"][idx][0] + ann_gene["pos"][idx][1]])
-        #print(sentence[ann_disease["pos"][idx][0] : ann_disease["pos"][idx][0] + ann_disease["pos"][idx][1]])
         doc = nlp(sentence)
         try:
             # BILUO(Begin, In, Last, Unit, Out)
@@ -146,15 +130,6 @@ class TBGADataset(Dataset):
             ents = []
             msk = []
 
-            # print("Length of sentence: {}".format(len(sentence.split(" "))))
-            # print("Bert tokenizer ({}): ".format(len(encoding["input_ids"])))
-            # print(encoding["input_ids"])
-            # print(encoding.tokens())
-            # print("Spacy tagger ({}): ".format(len(tag_label)))
-            # print(tag_label)
-            # print("Expanded Tags ({}): ".format(len(expand_tags)))
-            # print(expand_tags)
-
             '''
             For every expanded tagged sentences, if one element is (part of) an entity, we replace it with the embedding vector dimension(100),
             otherwise a zero vector with dimension(100).
@@ -166,7 +141,7 @@ class TBGADataset(Dataset):
                     ents.append([0] * self.cfg.EMBEDDING_DIMENSION)
 
             att_msk = len(ents)*[1]
-            # print("old length: {}".format(len(ents)))
+
             curr_seq_length = len(ents)
             if curr_seq_length <= max_seq_length:
                 ents.extend([[0] * self.cfg.EMBEDDING_DIMENSION] * (max_seq_length - curr_seq_length))
@@ -174,9 +149,7 @@ class TBGADataset(Dataset):
             else:
                 ents = ents[0: max_seq_length]
                 att_msk = att_msk[0: max_seq_length]
-            # print("new length: {}".format(len(ents)))
 
-            #att_msk_as_tensor = torch.tensor(att_msk)
             attention_msk_seq.append(att_msk)
 
             ents_as_tensor = torch.tensor(ents, dtype=torch.float)
@@ -191,7 +164,6 @@ class TBGADataset(Dataset):
 
             tokens = self.trunate_and_pad(encoding["input_ids"], max_seq_length)
             tokens_seq.append(tokens)
-            #label_seq.append([labels[i]] * max_seq_length)
 
 
         return tokens_seq, attention_msk_seq, labels, embed_ents, ent_mask
@@ -234,15 +206,11 @@ class TBGADataset(Dataset):
 
         padding = [0] * (max_seq_len - len(seq))
 
-        # attention_mask , which is a binary mask that identifies whether a token is a real word or just padding.
         seq_mask = [1] * len(seq) + padding
-
-        # seq_segment = [0] * len(seq) + padding
 
         seq += padding
         assert len(seq) == max_seq_len
         assert len(seq_mask) == max_seq_len
-        # assert len(seq_segment) == max_seq_len
         return seq, seq_mask
 
     def __getitem__(self, idx):
@@ -255,29 +223,6 @@ class TBGADataset(Dataset):
 
 
 if __name__ == '__main__':
-    # val_dir = "data/TBGA/val.json"
-    # val_data, val_label, gene_ann_val, dis_ann_val = process_txtdata(val_dir)
-    # val_dataset = list(zip(val_data, val_label))
-    # bert_tokenizer_fast = BertTokenizerFast.from_pretrained("bert-base-uncased")
-    #
-    # nlp = English()
-    # nlp.tokenizer.from_disk("tokenizer/tokenizer")
-    # ruler = nlp.add_pipe("entity_ruler")
-    # ruler = ruler.from_disk("ruler/ogg_doid")
-    #
-    # val_set = TBGADataset(val_dataset, bert_tokenizer_fast, gene_ann_val, dis_ann_val, ADD_KNOWLEDGE=True, nlp=nlp)
-    # val_dataloader = DataLoader(dataset=val_set, sampler=RandomSampler(val_set), batch_size=4, drop_last=True)
-    #
-    #
-    # data, label, ent, ent_msk = next(iter(val_dataloader))
-    #example = "The TEL/ARG oncogene is formed by t(1;12)(q25;p13) reciprocal translocation and is associated with human leukemia."
-    #print(example[8:11])
-    # print(data)
-    # print(label)
-    # print(ent)
-    # print(ent_msk)
-
-
     # Utils: Count the number of samples
     data_dir = "data/TBGA/TBGA_train_processed_subset.json"
     _, label, _, _ = process_txtdata(data_dir)
@@ -293,7 +238,7 @@ if __name__ == '__main__':
     print('Number of samples: {}'.format(len(label)))
 
 
-
+    # Test code
     # dataset = list(zip(data, label))
     # bert_tokenizer_fast = BertTokenizerFast.from_pretrained("dmis-lab/biobert-v1.1")
     #
