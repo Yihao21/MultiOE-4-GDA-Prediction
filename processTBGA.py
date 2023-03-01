@@ -9,12 +9,6 @@ import random
 
 random.seed(29)
 
-
-#print(len(classes_ogg))
-# gen = ogg.individuals()
-# print(*(gen))
-#attrs = vars(classes_ogg[2])
-#print(', '.join("%s: %s" % item for item in attrs.items()))
 def process_raw_txt(dir, targetdir):
     data_li = []
     with open(dir,"r") as f:
@@ -193,27 +187,27 @@ def countclasses(dir):
     print('Number of samples: {}'.format(total))
 
 def main():
-    # process_raw_txt("data/TBGA/TBGA_test.json", "data/TBGA/test1.json")
-    # print("Processing raw file")
-    # ogg = get_ontology("onto/ogg.owl").load()
-    # classes_ogg = list(ogg.classes())
-    # doid = get_ontology("onto/doid-base.owl").load()
-    # classes_doid = list(doid.classes())
-    # print("ontology loaded")
-    # df = pd.read_csv('mappings.csv')
-    # process_jsondata_gene("data/TBGA/test1.json", classes_ogg, 20516)  # Train 178264 | val 20193 | test 20516
-    # process_jsondata_dis("data/TBGA/filenew.json", df, 20516)
+    process_raw_txt("data/TBGA/TBGA_test.json", "data/TBGA/test1.json")
+    print("Processing raw file")
+    ogg = get_ontology("onto/ogg.owl").load()
+    classes_ogg = list(ogg.classes())
+    doid = get_ontology("onto/doid-base.owl").load()
+    classes_doid = list(doid.classes())
+    print("ontology loaded")
+    df = pd.read_csv('mappings.csv')
+    process_jsondata_gene("data/TBGA/test1.json", classes_ogg, 20516)  # Train 178264 | val 20193 | test 20516
+    process_jsondata_dis("data/TBGA/filenew.json", df, 20516)
 
 
-    #extractProcessedId("data/TBGA/filenew.json", "data/TBGA/processed_test.json", 20516)
+    extractProcessedId("data/TBGA/filenew.json", "data/TBGA/processed_test.json", 20516)
 
     createSubset("data/TBGA/TBGA_test_short.json", "NA", targetdir="data/TBGA/newsubset.json", total=6500)
-    #replacespecial('data/TBGA/TBGA_train_processed_subset.json', "data/TBGA/subset.json", 43428)
+    replacespecial('data/TBGA/TBGA_train_processed_subset.json', "data/TBGA/subset.json", 43428)
     re_print("data/TBGA/newsubset.json", 'data/TBGA/TBGA_test_512.json')
 
 if __name__ == '__main__':
     #main()
     directory = "data/TBGA/TBGA_short.json"
-    #check_sentence_length("data/TBGA/TBGA_test_processed.json")
-    #re_print("data/TBGA/TBGA_shorttextset.json", "data/TBGA/TBGA_short.json")
+    check_sentence_length("data/TBGA/TBGA_test_processed.json")
+    re_print("data/TBGA/TBGA_shorttextset.json", "data/TBGA/TBGA_short.json")
     countclasses(directory)
