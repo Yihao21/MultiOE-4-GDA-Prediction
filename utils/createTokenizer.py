@@ -53,12 +53,6 @@ def orgintextVSann(textstr, pos, nlp, i):
 
         idx += 1
 
-    # print(textstr)
-    # print(entFound)
-    # print(textstr[new_pos[0]: new_pos[0] + new_pos[1]])
-    # print(ent)
-    # print(new_pos)
-    # print(pos)
     assert entFound == textstr[new_pos[0]: new_pos[0] + new_pos[1]]
     # if entFound.endswith(",") or entFound.endswith("."):
     #     return None
@@ -120,14 +114,10 @@ if __name__ == '__main__':
     nlp.tokenizer.add_special_case("DeltaFosB", case)
     nlp.tokenizer.to_disk("./tokenizer/tokenizer")
 
-
     createTokenizer("data/TBGA/TBGA_train_processed_subset.json", 37249, nlp)
     createTokenizer("data/TBGA/TBGA_val_processed.json", 6587, nlp)
     createTokenizer("data/TBGA/TBGA_test_processed.json", 6547, nlp)
-    #example = "Although the PI3K/AKT/mTOR signaling pathway plays a role in MB, we did not find TSC1/TSC2 (TSC, tuberous sclerosis complex) mutation in our patient."
-    #orgintextVSann(example, [18, 3], nlp, 0)
-    # example = "Dietary intake of phytoestrogens, estrogen receptor-beta polymorphisms and the risk of prostate cancer."
-    # print(example[34:56])
+
 
 
 
