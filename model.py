@@ -130,7 +130,7 @@ if __name__ == '__main__':
     ruler = ruler.from_disk("ruler/ogg_doid")
     nlp.tokenizer.from_disk("tokenizer/tokenizer")
 
-    train_dir = "data/TBGA/train.json"  # TBGA_train_processed_subset.json"
+    train_dir = "dataset/TBGA/TBGA_test_processed.json"
     train_data, train_label, gene_ann, dis_ann = process_txtdata(train_dir)
     training = list(zip(train_data, train_label))
 
@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
     train_dataset = TBGADataset(training, bert_tokenizer, gene_ann=gene_ann, dis_ann=dis_ann, ADD_KNOWLEDGE=True, nlp=nlp,SINGLE_ONTO=False)
 
-    train_dataloader = DataLoader(dataset=train_dataset,batch_size=32,drop_last=True)
+    train_dataloader = DataLoader(dataset=train_dataset,batch_size=16,drop_last=True)
 
     dataid, att_msk, label, ent, ent_msk = next(iter(train_dataloader))
 
