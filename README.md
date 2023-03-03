@@ -19,5 +19,3 @@ Furthermore, the code for preprocessing these two datasets is in processTBGA.py 
 if you find our research useful, please cite: 
 
 
-
-<img src="/home/yihao/SCAI/scai_logo.svg" alt="scai_logo" style="zoom:25%;" />
