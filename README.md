@@ -2,6 +2,17 @@
 
 This repository is for the publication:"Human-aligned multi-ontologies representation for gene-disease associations prediction."
 
+## Requirements
+- Pytorch >=0.4.1
+- Python3
+- owlready2
+- tqdm
+- spacy
+- wandb
+- transformers
+- gensim
+- pandas
+
 ## Code structure and usage
 - **dataset** folder include our processed dataset of TBGA and DisGeNet.
 
