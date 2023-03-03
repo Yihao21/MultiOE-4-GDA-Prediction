@@ -21,7 +21,6 @@ class MultiBert(nn.Module):
         super().__init__()
         self.cfg = config
         self.num_labels = self.cfg.NUM_LABELS
-        #self.bert = AutoModelForSequenceClassification.from_pretrained("dmis-lab/biobert-v1.1")
         self.bert = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased")
         self.dropout = nn.Dropout(p=self.cfg.DROP_OUT_PROB)
         self.hidden_dim = 3 * 768
@@ -29,13 +28,10 @@ class MultiBert(nn.Module):
 
     def forward(self, input_ids, attention_mask, labels):
         output1 = self.bert(input_ids=input_ids, attention_mask=attention_mask, token_type_ids=None, output_hidden_states=True)
-        #output1 = self.bert(input_ids, token_type_ids, attention_mask, labels, output_hidden_states=True)
         pooled_output = torch.cat(tuple([output1[1][i] for i in [-3, -2, -1]]), dim=-1)
         pooled_output = pooled_output[:, 0, :]    # BSZ  3 * 768
-        #pooled_output = output1[1][-1]
         output = self.dropout(pooled_output)
         output = self.classifier(output)          # BSZ  num_labels
-
 
         loss_fct = nn.CrossEntropyLoss()
         loss = loss_fct(output, labels)
@@ -55,26 +51,16 @@ class ERNIEModel(nn.Module):
     def __init__(self, config=cfg):
         super().__init__()
         self.cfg = config
-        #model, _ = BertModel.from_pretrained('bert-base-uncased')
 
         # I change the num_labels in modelling.py directly line 1068
         model,_ = BertForSequenceClassification.from_pretrained('bert-base-uncased')
         self.transformer = model
-        #self.dropout = nn.Dropout(p=self.cfg.DROP_OUT_PROB)
-        #self.hidden_dim = 768
-        #self.classifier = nn.Linear(self.hidden_dim, self.cfg.NUM_LABELS)
-        #self.save_hyperparameters()
 
     def forward(self, x, att_msk, ents, ent_mask, label):
         pooled_output = self.transformer(input_ids=x, attention_mask=att_msk, input_ent=ents, ent_mask=ent_mask)
-        #print(pooled_output.shape)
 
         loss_fct = nn.CrossEntropyLoss()
         loss = loss_fct(pooled_output, label)
-        # old code
-        # out, _ = self.transformer(x, input_ent=ents, ent_mask=ent_mask, output_all_encoded_layers=False)
-        # out = self.dropout(out)         # BSZ 64 768
-        # out = self.classifier(out)
         return pooled_output, loss
 
 class KBert(nn.Module):
