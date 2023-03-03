@@ -1,6 +1,6 @@
 # MultiOE-4-GDA-Prediction
 
-This repository is for the publication:"Human-aligned multi-ontologies representation for gene-disease associations prediction."
+This repository is for the publication:"Human-aligned multi-ontologies representation for gene-disease associations prediction." from Fraunhofer SCAI Applied Semantics group.
 
 ## Requirements
 - Pytorch >=0.4.1
@@ -17,7 +17,9 @@ This repository is for the publication:"Human-aligned multi-ontologies represent
 - **dataset** folder include our processed dataset of TBGA and DisGeNet.
 
 For the original dataset, please check:
+
 TBGA: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-022-04646-6
+
 DisGeNet: https://www.disgenet.org/
 
 Furthermore, the code for preprocessing these two datasets is in processTBGA.py and DG_Miner_preprocess.py, respectively. TBGADataset.py is the code to prepare for the PyTorch dataloader-fashion input.
@@ -28,5 +30,4 @@ Furthermore, the code for preprocessing these two datasets is in processTBGA.py 
 
 ## Cite
 if you find our research useful, please cite: 
-
 
