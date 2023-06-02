@@ -28,6 +28,4 @@ Furthermore, the code for preprocessing these two datasets is in processTBGA.py 
 - For the code of ERNIE model, please check the original repo: https://github.com/thunlp/ERNIE and put "knowledge_bert" folder into this working directory.
 - For the ontology embedding, please check the original repo from OWL2Vec*: https://github.com/KRR-Oxford/OWL2Vec-Star. Create a "embeddings" folder and put output.embeddings file in it.
 
-## Cite
-if you find our research useful, please cite: 
 
