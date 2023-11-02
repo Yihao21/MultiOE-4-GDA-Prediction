@@ -1,6 +1,8 @@
 # MultiOE-4-GDA-Prediction
 
-This repository is for the publication:"Human-aligned multi-ontologies representation for gene-disease associations prediction." from Fraunhofer SCAI Applied Semantics group.
+This repository is for the publication:"Multi-ontology embeddings approach on human-aligned multi-ontologies representation for gene-disease associations prediction." from Fraunhofer SCAI Applied Semantics group.
+
+Paper link: https://doi.org/10.1016/j.heliyon.2023.e21502
 
 ## Requirements
 - Pytorch >=0.4.1
