@@ -28,4 +28,17 @@ Furthermore, the code for preprocessing these two datasets is in processTBGA.py 
 - For the code of ERNIE model, please check the original repo: https://github.com/thunlp/ERNIE and put "knowledge_bert" folder into this working directory.
 - For the ontology embedding, please check the original repo from OWL2Vec*: https://github.com/KRR-Oxford/OWL2Vec-Star. Create a "embeddings" folder and put output.embeddings file in it.
 
+## Cite
+If you find this code or the paper to be useful for your research, please consider citing.
 
+<pre>
+@article{WANG2023e21502,
+title = {Multi-ontology embeddings approach on human-aligned multi-ontologies representation for gene-disease associations prediction},
+journal = {Heliyon},
+pages = {e21502},
+year = {2023},
+issn = {2405-8440},
+doi = {https://doi.org/10.1016/j.heliyon.2023.e21502},
+url = {https://www.sciencedirect.com/science/article/pii/S2405844023087108},
+author = {Yihao Wang and Philipp Wegner and Daniel Domingo-Fernández and Alpha {Tom Kodamullil}},
+keywords = {Multi-ontology, Natural language processing}}</pre>
