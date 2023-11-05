@@ -40,11 +40,6 @@ def load_model(model, optimizer, savepath):
 def trainigprocessBERT(epochs, model, optimizer, scheduler, train_dataloader, validation_dataloader, device):
     for epoch_i in range(0, epochs):
 
-        logging.info('======== Epoch {:} / {:} ========'.format(epoch_i + 1, epochs))
-        logging.info('Training...')
-        print('======== Epoch {:} / {:} ========'.format(epoch_i + 1, epochs))
-        print('Training...')
-
         total_train_loss = 0
         running_loss = 0
 
@@ -76,14 +71,10 @@ def trainigprocessBERT(epochs, model, optimizer, scheduler, train_dataloader, va
 
         avg_train_loss = total_train_loss / len(train_dataloader)
 
-        print("  Average training loss: {0:.2f}".format(avg_train_loss))
         wandb.log({'training_loss': avg_train_loss/len(train_dataloader)})
         save_model(model, optimizer, epoch_i + 1, "BERT")
 
         ### Validation
-        print("Running Validation...")
-        logging.info('Validation...')
-
         model.eval()
 
         # Tracking variables
@@ -125,14 +116,8 @@ def trainigprocessBERT(epochs, model, optimizer, scheduler, train_dataloader, va
             wandb.log({'Accuracy': acc, "Recall Score": r_s, "F1 Macro Score": f1_s})
 
 
-        avg_val_accuracy = total_eval_accuracy / len(validation_dataloader)
-        logging.info("  Accuracy: {0:.2f}".format(avg_val_accuracy))
-
         avg_val_loss = total_eval_loss / len(validation_dataloader)
 
-        print("  Validation Loss: {0:.2f}".format(avg_val_loss))
-
-    print("Training complete!")
 
 def evalBERT(model, test_dataloader, device):
     model.eval()
@@ -185,28 +170,13 @@ def evalBERT(model, test_dataloader, device):
                                                        preds=y_true_m, y_true=y_pred_m,
                                                        class_names=["NA", "therapeutic", "biomarker", "genomic_alterations"])})
 
-    avg_val_accuracy = total_eval_accuracy / len(test_dataloader)
-    logging.info("  Accuracy: {0:.2f}".format(avg_val_accuracy))
-
-    avg_val_loss = total_eval_loss / len(test_dataloader)
-
-    logging.info("  Test Loss: {0:.2f}".format(avg_val_loss))
-
     try:
         wandb.log({'ROC AUC Score': sum(rocauc_list) / len(rocauc_list)})
     except:
         logging.info(" ROC AUC Score cannot be calculated because of divide by zero")
 
 def trainigprocessERNIE(epochs, model, optimizer, scheduler, train_dataloader, val_dataloader, device):
-    training_stats = []
     for epoch_i in range(0, epochs):
-
-        logging.info('======== Epoch {:} / {:} ========'.format(epoch_i + 1, epochs))
-        logging.info('Training...')
-        print('======== Epoch {:} / {:} ========'.format(epoch_i + 1, epochs))
-        print('Training...')
-
-        # Reset the total loss for this epoch.
         total_train_loss = 0
         running_loss = 0
 
@@ -236,15 +206,11 @@ def trainigprocessERNIE(epochs, model, optimizer, scheduler, train_dataloader, v
                 running_loss = 0
 
         avg_train_loss = total_train_loss / len(train_dataloader)
-        print("  Average training loss: {0:.2f}".format(avg_train_loss))
         wandb.log({'training_loss': avg_train_loss / len(train_dataloader)})
 
         save_model(model, optimizer, epoch_i + 1, "ERNIE")
 
         ### Validation
-        print("Running Validation...")
-        logging.info('Validation...')
-
         model.eval()
 
         # Tracking variables
@@ -286,15 +252,10 @@ def trainigprocessERNIE(epochs, model, optimizer, scheduler, train_dataloader, v
                 logging.warning("Some class not shown in the mini-batch")
             wandb.log({'Accuracy': acc, "Recall Score": r_s, "F1 Macro Score": f1_s})
 
-        avg_val_accuracy = total_eval_accuracy / len(val_dataloader)
-        logging.info("  Accuracy: {0:.2f}".format(avg_val_accuracy))
-
         avg_val_loss = total_eval_loss / len(val_dataloader)
 
-        print("  Validation Loss: {0:.2f}".format(avg_val_loss))
         wandb.log({'Validation Loss': avg_val_loss})
         try:
-            #logging.info("  ROC AUC Score: {0:.4f}".format(sum(rocauc_list) / len(rocauc_list)))
             wandb.log({'ROC AUC Score': sum(rocauc_list) / len(rocauc_list)})
         except:
             logging.info(" ROC AUC Score cannot be calculated because of divide by zero")
@@ -357,17 +318,10 @@ def evalERNIE(model, test_dataloader, device):
                                                        class_names=["NA", "therapeutic", "biomarker",
                                                                     "genomic_alterations"])})
 
-    avg_val_accuracy = total_eval_accuracy / len(test_dataloader)
-    logging.info("  Accuracy: {0:.2f}".format(avg_val_accuracy))
-
     avg_val_loss = total_eval_loss / len(test_dataloader)
 
-    logging.info("  Test Loss: {0:.2f}".format(avg_val_loss))
     wandb.log({'Test Loss': avg_val_loss})
     try:
         wandb.log({'ROC AUC Score': sum(rocauc_list) / len(rocauc_list)})
     except:
         logging.info(" ROC AUC Score cannot be calculated because of divide by zero")
-
-if __name__ == '__main__':
-    print("run some test")
