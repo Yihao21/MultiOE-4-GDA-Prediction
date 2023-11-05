@@ -112,10 +112,6 @@ def createSubset(dir, l, targetdir, total):
         data = json.load(f)
     for idx in tqdm(range(total)):
         label = data[idx]["relation"]
-        # gene_pos = data[idx]["h"]["pos"]
-        # gene_id = data[idx]["h"]["id"]
-        # dis_pos = data[idx]["t"]["pos"]
-        # dis_id = data[idx]["t"]["id"]
 
         if label == l:
             number = random.randint(0, 100)
@@ -150,7 +146,6 @@ def replacespecial(dir, targetdir, total):
 def check_sentence_length(dir):
     with open(dir) as f:
         data = json.load(f)
-    total = len(data)
     #ok_length = sum(len(str(samples["text"])) < 64 for samples in data)
     #print("The number of samples with length smaller than 64 is: {}/{}".format(ok_length, total))
     subdata = [samples for samples in data if len(str(samples["text"])) <= 128]
@@ -206,8 +201,4 @@ def main():
     re_print("data/TBGA/newsubset.json", 'data/TBGA/TBGA_test_512.json')
 
 if __name__ == '__main__':
-    #main()
-    directory = "data/TBGA/TBGA_short.json"
-    check_sentence_length("data/TBGA/TBGA_test_processed.json")
-    re_print("data/TBGA/TBGA_shorttextset.json", "data/TBGA/TBGA_short.json")
-    countclasses(directory)
+    main()
