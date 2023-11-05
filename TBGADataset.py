@@ -1,17 +1,12 @@
 import torch
-from torch.utils.data import Dataset, DataLoader, RandomSampler
+from torch.utils.data import Dataset
 import json
 import gensim
-from transformers import BertTokenizerFast
-from spacy.lang.en import English
 from spacy.training import offsets_to_biluo_tags
 from configs.config import cfg
 from tqdm import tqdm
 import logging
-import numpy as np
 
-logging.getLogger("spacy")
-logging.basicConfig(filemode="w", filename="LOG.txt", level=logging.WARNING)
 
 '''
 Author: Yihao Wang@Fraunhofer SCAI
@@ -236,16 +231,5 @@ if __name__ == '__main__':
         print('{} has {} samples. {:.4f}'.format(k, str(count_class[k]), count_class[k]/len(label)))
 
     print('Number of samples: {}'.format(len(label)))
-
-
-    # Test code
-    # dataset = list(zip(data, label))
-    # bert_tokenizer_fast = BertTokenizerFast.from_pretrained("dmis-lab/biobert-v1.1")
-    #
-    # nlp = English()
-    # ruler = nlp.add_pipe("entity_ruler")
-    # ruler = ruler.from_disk("ruler/go_doid")
-    #
-    # TBGADataset = TBGADataset(dataset, bert_tokenizer_fast, ADD_KNOWLEDGE=False, nlp=nlp)
 
 
