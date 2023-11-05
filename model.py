@@ -2,14 +2,7 @@ import torch
 from torch import nn
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AdamW
 from knowledge_bert import BertModel, BertForSequenceClassification, BertTokenizer, BertAdam, BertConfig
-from collections import OrderedDict
 from configs.config import DefaultConfig as cfg
-import torch.nn.functional as F
-from sklearn.metrics import f1_score, recall_score, roc_auc_score, precision_score, classification_report, confusion_matrix
-import pandas as pd
-import seaborn as sn
-import matplotlib.pyplot as plt
-
 
 class MultiBert(nn.Module):
     """BERT model for classification.
@@ -104,33 +97,3 @@ class KBert(nn.Module):
         loss = self.criterion(self.softmax(logits.view(-1, self.labels_num)), label.view(-1))
         return loss, logits
 
-
-if __name__ == '__main__':
-    from TBGADataset import TBGADataset, process_txtdata
-    from torch.utils.data import Dataset, DataLoader, RandomSampler
-    from spacy.lang.en import English
-    from transformers import BertTokenizerFast
-
-    nlp = English()
-    ruler = nlp.add_pipe("entity_ruler")
-    ruler = ruler.from_disk("ruler/ogg_doid")
-    nlp.tokenizer.from_disk("tokenizer/tokenizer")
-
-    train_dir = "dataset/TBGA/TBGA_test_processed.json"
-    train_data, train_label, gene_ann, dis_ann = process_txtdata(train_dir)
-    training = list(zip(train_data, train_label))
-
-    bert_tokenizer = BertTokenizerFast.from_pretrained("bert-base-uncased")
-
-    train_dataset = TBGADataset(training, bert_tokenizer, gene_ann=gene_ann, dis_ann=dis_ann, ADD_KNOWLEDGE=True, nlp=nlp,SINGLE_ONTO=False)
-
-    train_dataloader = DataLoader(dataset=train_dataset,batch_size=16,drop_last=True)
-
-    dataid, att_msk, label, ent, ent_msk = next(iter(train_dataloader))
-
-
-    model = ERNIEModel()
-    output,loss = model(dataid, att_msk, ent, ent_msk, label)
-    print(output)
-    print(output.shape)
-    print(loss)
